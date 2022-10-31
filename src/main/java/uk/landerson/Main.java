@@ -8,54 +8,49 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
 
         final byte PERCENT = 100;
-        final int MIN_LOAN_PRINCIPAL = 1000;
-        final int MAX_LOAN_PRINCIPAL = 1_000_000;
 
-        int loanPrincipal;
+        int loanPrincipal = (int) readNumber("Principal: ", 1000, 1_000_000);
+        float yearlyInterest = (float) readNumber("Annual interest rate (%): ", 0, 30) / PERCENT;
+        byte termInYears = (byte) readNumber("Loan terms in years: ", 1, 30);
 
-        do {
-            System.out.print("Principal (£1k - £1M): ");
-            loanPrincipal = scanner.nextInt();
-        } while (loanPrincipal < MIN_LOAN_PRINCIPAL || loanPrincipal > MAX_LOAN_PRINCIPAL);
+        double monthlyRepayment = caclulateMortgage(loanPrincipal, yearlyInterest, termInYears);
 
-        float yearlyInterest;
-        final byte MIN_INTEREST_PERCENT = 0;
-        final byte MAX_INTEREST_PERCENT = 30;
-
-        do {
-            System.out.print("Annual interest rate (%) (0 - 30): ");
-            yearlyInterest = scanner.nextFloat();
-        } while (yearlyInterest < MIN_INTEREST_PERCENT || yearlyInterest > MAX_INTEREST_PERCENT);
-
-        float yearlyInterestPercent = yearlyInterest / PERCENT;
-
-        byte termInYears;
-        final byte MIN_TERM_YEARS = 1;
-        final byte MAX_TERM_YEARS = 30;
-
-        do {
-            System.out.print("Loan terms in years (1 - 30): ");
-            termInYears = scanner.nextByte();
-        } while (termInYears < MIN_TERM_YEARS || termInYears > MAX_TERM_YEARS);
-
-        double monthlyRepayment = caclulateMortgage(loanPrincipal, yearlyInterestPercent, termInYears);
         String formattedRepayment = NumberFormat.getCurrencyInstance().format(monthlyRepayment);
         System.out.println("Mortgage: " + formattedRepayment);
     }
 
-    public static double caclulateMortgage(int principal, float yearlyInterest, int years) {
+    public static double readNumber(String prompt, double min, double max) {
+        Scanner scanner = new Scanner(System.in);
+        double value;
+
+        while (true) {
+            System.out.print(prompt);
+            value = scanner.nextDouble();
+
+            if (value >= min && value <= max)
+                break;
+
+            System.out.println("Please enter a value between " + min + " and " + max);
+        }
+
+        return value;
+    }
+
+    public static double caclulateMortgage(int principal, double yearlyInterest, byte years) {
 
         final byte MONTHS_IN_YEAR = 12;
-
-        float monthlyInterestPercent = yearlyInterest / MONTHS_IN_YEAR;
         int termInMonths = years * MONTHS_IN_YEAR;
 
-        return principal
-                * (((monthlyInterestPercent * Math.pow((1 + monthlyInterestPercent), termInMonths))
-                / (Math.pow(1 + monthlyInterestPercent, termInMonths) - 1)));
-
+        if (yearlyInterest == 0.0) {
+            return (double) principal / termInMonths;
+        } else {
+            double monthlyInterest = yearlyInterest / MONTHS_IN_YEAR;
+            return principal
+                    * (((monthlyInterest * Math.pow((1 + monthlyInterest), termInMonths))
+                    / (Math.pow(1 + monthlyInterest, termInMonths) - 1)));
+        }
     }
+
 }
