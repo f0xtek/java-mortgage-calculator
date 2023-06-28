@@ -3,9 +3,13 @@ package uk.landerson;
 import java.util.Scanner;
 
 public class Console {
-    public static double readNumber(String prompt, double min, double max) {
-        Scanner scanner = new Scanner(System.in);
+    private static final Scanner scanner = new Scanner(System.in);
 
+    public static double readNumber(String prompt) {
+        return scanner.nextDouble();
+    }
+
+    public static double readNumber(String prompt, double min, double max) {
         double value;
 
         while (true) {
