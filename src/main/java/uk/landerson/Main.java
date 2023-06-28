@@ -6,16 +6,15 @@
 package uk.landerson;
 
 import java.text.NumberFormat;
-import java.util.Scanner;
 
 public class Main {
     private final static byte PERCENT = 100;
     private final static byte MONTHS_IN_YEAR = 12;
 
     public static void main(String[] args) {
-        int principal = (int) readNumber("Principal: ", 1000, 1_000_000);
-        float yearlyInterest = (float) readNumber("Annual interest rate (%): ", 0, 30) / PERCENT;
-        byte numYears = (byte) readNumber("Loan terms in years: ", 1, 30);
+        int principal = (int) Console.readNumber("Principal: ", 1000, 1_000_000);
+        float yearlyInterest = (float) Console.readNumber("Annual interest rate (%): ", 0, 30) / PERCENT;
+        byte numYears = (byte) Console.readNumber("Loan terms in years: ", 1, 30);
 
         double monthlyRepayment = caclulateMortgage(principal, yearlyInterest, numYears);
         int totalNumPayments = calculateTotalNumPayments(numYears);
@@ -87,21 +86,4 @@ public class Main {
         System.out.println(NumberFormat.getCurrencyInstance().format(amount));
     }
 
-    private static double readNumber(String prompt, double min, double max) {
-        Scanner scanner = new Scanner(System.in);
-
-        double value;
-
-        while (true) {
-            System.out.print(prompt);
-            value = scanner.nextDouble();
-
-            if (value >= min && value <= max)
-                break;
-
-            System.out.println("Please enter a value between " + min + " and " + max);
-        }
-
-        return value;
-    }
 }
