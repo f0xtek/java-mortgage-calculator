@@ -3,37 +3,38 @@ package uk.landerson;
 import java.text.NumberFormat;
 
 public class MortgageReport {
-    public static void printPaymentPlan(int totalNumPayments, int principal, double monthlyInterest) {
+
+    private final MortgageCalculator calculator;
+
+    MortgageReport(int principal, float annualInterest, byte numYears) {
+        this.calculator = new MortgageCalculator(principal, annualInterest, numYears);
+    }
+
+    void printPaymentPlan() {
         printHeader("PAYMENT SCHEDULE");
         System.out.println("Payment plan:");
 
         short numPaymentsMade = 0;
+        int totalPayments = calculator.calculateTotalNumPayments();
+        double monthlyInterest = calculator.calculateMonthlyInterest();
 
-        while (numPaymentsMade < totalNumPayments) {
+        while (numPaymentsMade < totalPayments) {
             numPaymentsMade++;
-            double remainingBalance = Main.calculateRemainingBalance(principal, monthlyInterest, totalNumPayments, numPaymentsMade);
-            printCurrency(remainingBalance);
+            double remainingBalance = calculator.calculateRemainingBalance(monthlyInterest, totalPayments, numPaymentsMade);
+            System.out.println(convertToCurrency(remainingBalance));
         }
     }
 
-    public static void printMonthlyRepayment(double monthlyRepayment) {
+    void printMonthlyRepayment() {
         printHeader("MORTGAGE");
-
-        System.out.print("Monthly Payment: ");
-
-        printCurrency(monthlyRepayment);
+        System.out.printf("Monthly Payment: %s\n", convertToCurrency(calculator.calculateMonthlyPayment()));
     }
 
-    public static void printHeader(String message) {
-        System.out.println("\n" + message);
-
-        for (int i = 0; i < message.length(); i++)
-            System.out.print("-");
-
-        System.out.println();
+    private void printHeader(String message) {
+        System.out.printf("\n%s\n%s\n", message, "-".repeat(message.length()));
     }
 
-    public static void printCurrency(double amount) {
-        System.out.println(NumberFormat.getCurrencyInstance().format(amount));
+    private String convertToCurrency(double amount) {
+        return NumberFormat.getCurrencyInstance().format(amount);
     }
 }
