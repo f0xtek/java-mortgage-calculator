@@ -1,4 +1,4 @@
-package uk.landerson;
+package uk.landerson.calculation;
 
 public class MortgageCalculator {
     private final static byte MONTHS_IN_YEAR = 12;
@@ -7,27 +7,27 @@ public class MortgageCalculator {
     private final byte numYears;
     private final double annualInterest;
 
-    MortgageCalculator(int principal, double annualInterest, byte numYears) {
+    public MortgageCalculator(int principal, double annualInterest, byte numYears) {
         this.principal = principal;
         this.numYears = numYears;
         this.annualInterest = annualInterest / PERCENT;
     }
 
-    int calculateTotalNumPayments() {
+    public int calculateTotalNumPayments() {
         return MONTHS_IN_YEAR * numYears;
     }
 
-    double calculateMonthlyInterest() {
+    public double calculateMonthlyInterest() {
         return annualInterest / MONTHS_IN_YEAR;
     }
 
-    double calculateRemainingBalance(double monthlyInterest, int totalNumPayments, int numPaymentsMade) {
+    public double calculateRemainingBalance(double monthlyInterest, int totalNumPayments, int numPaymentsMade) {
         return (principal *
                 (Math.pow((1 + monthlyInterest), totalNumPayments) - Math.pow((1 + monthlyInterest), numPaymentsMade)))
                 / ((Math.pow((1 + monthlyInterest), totalNumPayments)) - 1);
     }
 
-    double calculateMonthlyPayment() {
+    public double calculateMonthlyPayment() {
         int termInMonths = calculateTotalNumPayments();
 
         if (annualInterest == 0.0) {

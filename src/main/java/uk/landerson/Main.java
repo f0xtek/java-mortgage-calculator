@@ -5,6 +5,9 @@
  */
 package uk.landerson;
 
+import uk.landerson.io.Console;
+import uk.landerson.reporting.MortgageReport;
+
 public class Main {
 
     public static void main(String[] args) {

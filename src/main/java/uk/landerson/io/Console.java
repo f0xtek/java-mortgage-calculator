@@ -1,4 +1,4 @@
-package uk.landerson;
+package uk.landerson.io;
 
 import java.util.Scanner;
 

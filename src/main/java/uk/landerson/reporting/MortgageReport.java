@@ -1,4 +1,6 @@
-package uk.landerson;
+package uk.landerson.reporting;
+
+import uk.landerson.calculation.MortgageCalculator;
 
 import java.text.NumberFormat;
 
@@ -6,11 +8,11 @@ public class MortgageReport {
 
     private final MortgageCalculator calculator;
 
-    MortgageReport(int principal, float annualInterest, byte numYears) {
+    public MortgageReport(int principal, float annualInterest, byte numYears) {
         this.calculator = new MortgageCalculator(principal, annualInterest, numYears);
     }
 
-    void printPaymentPlan() {
+    public void printPaymentPlan() {
         printHeader("PAYMENT SCHEDULE");
         System.out.println("Payment plan:");
 
@@ -25,7 +27,7 @@ public class MortgageReport {
         }
     }
 
-    void printMonthlyRepayment() {
+    public void printMonthlyRepayment() {
         printHeader("MORTGAGE");
         System.out.printf("Monthly Payment: %s\n", convertToCurrency(calculator.calculateMonthlyPayment()));
     }
