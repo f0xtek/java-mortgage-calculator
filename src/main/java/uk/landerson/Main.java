@@ -5,8 +5,6 @@
  */
 package uk.landerson;
 
-import java.text.NumberFormat;
-
 public class Main {
     private final static byte PERCENT = 100;
     private final static byte MONTHS_IN_YEAR = 12;
@@ -20,8 +18,8 @@ public class Main {
         int totalNumPayments = calculateTotalNumPayments(numYears);
         double monthlyInterest = calculateMonthlyInterest(yearlyInterest);
 
-        printMonthlyRepayment(monthlyRepayment);
-        printPaymentPlan(totalNumPayments, principal, monthlyInterest);
+        MortgageReport.printMonthlyRepayment(monthlyRepayment);
+        MortgageReport.printPaymentPlan(totalNumPayments, principal, monthlyInterest);
     }
 
     private static int calculateTotalNumPayments(byte numYears) {
@@ -32,7 +30,7 @@ public class Main {
         return yearlyInterest / MONTHS_IN_YEAR;
     }
 
-    private static double calculateRemainingBalance(int principal, double monthlyInterest, int totalNumPayments, int numPaymentsMade) {
+    static double calculateRemainingBalance(int principal, double monthlyInterest, int totalNumPayments, int numPaymentsMade) {
         return (principal *
                 (Math.pow((1 + monthlyInterest), totalNumPayments) - Math.pow((1 + monthlyInterest), numPaymentsMade)))
                 / ((Math.pow((1 + monthlyInterest), totalNumPayments)) - 1);
@@ -50,40 +48,6 @@ public class Main {
         return principal
                 * (((monthlyInterest * Math.pow((1 + monthlyInterest), termInMonths))
                 / (Math.pow(1 + monthlyInterest, termInMonths) - 1)));
-    }
-
-    private static void printPaymentPlan(int totalNumPayments, int principal, double monthlyInterest) {
-        printHeader("PAYMENT SCHEDULE");
-        System.out.println("Payment plan:");
-
-        short numPaymentsMade = 0;
-
-        while (numPaymentsMade < totalNumPayments) {
-            numPaymentsMade++;
-            double remainingBalance = calculateRemainingBalance(principal, monthlyInterest, totalNumPayments, numPaymentsMade);
-            printCurrency(remainingBalance);
-        }
-    }
-
-    private static void printMonthlyRepayment(double monthlyRepayment) {
-        printHeader("MORTGAGE");
-
-        System.out.print("Monthly Payment: ");
-
-        printCurrency(monthlyRepayment);
-    }
-
-    private static void printHeader(String message) {
-        System.out.println("\n" + message);
-
-        for (int i = 0; i < message.length(); i++)
-            System.out.print("-");
-
-        System.out.println();
-    }
-
-    private static void printCurrency(double amount) {
-        System.out.println(NumberFormat.getCurrencyInstance().format(amount));
     }
 
 }
