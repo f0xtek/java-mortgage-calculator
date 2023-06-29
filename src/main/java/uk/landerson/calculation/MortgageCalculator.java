@@ -2,7 +2,7 @@ package uk.landerson.calculation;
 
 public class MortgageCalculator {
     private final static byte MONTHS_IN_YEAR = 12;
-    public final static byte PERCENT = 100;
+    private final static byte PERCENT = 100;
     private final int principal;
     private final byte numYears;
     private final double annualInterest;
@@ -25,6 +25,17 @@ public class MortgageCalculator {
         return (principal *
                 (Math.pow((1 + monthlyInterest), totalNumPayments) - Math.pow((1 + monthlyInterest), numPaymentsMade)))
                 / ((Math.pow((1 + monthlyInterest), totalNumPayments)) - 1);
+    }
+
+    public double[] getRemainingBalances() {
+        int totalPayments = calculateTotalNumPayments();
+        double[] balances = new double[totalPayments];
+
+        for (short paymentNumber = 1; paymentNumber <= balances.length; paymentNumber++) {
+            balances[paymentNumber - 1] = calculateRemainingBalance(calculateMonthlyInterest(), totalPayments, paymentNumber);
+        }
+
+        return balances;
     }
 
     public double calculateMonthlyPayment() {

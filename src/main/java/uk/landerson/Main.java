@@ -5,6 +5,7 @@
  */
 package uk.landerson;
 
+import uk.landerson.calculation.MortgageCalculator;
 import uk.landerson.io.Console;
 import uk.landerson.reporting.MortgageReport;
 
@@ -15,7 +16,8 @@ public class Main {
         float annualInterest = (float) Console.readNumber("Annual interest rate (%): ", 0, 30);
         byte numYears = (byte) Console.readNumber("Loan terms in years: ", 1, 30);
 
-        MortgageReport report = new MortgageReport(principal, annualInterest, numYears);
+        MortgageCalculator calculator = new MortgageCalculator(principal, annualInterest, numYears);
+        MortgageReport report = new MortgageReport(calculator);
         report.printMonthlyRepayment();
         report.printPaymentPlan();
     }

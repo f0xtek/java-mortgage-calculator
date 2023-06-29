@@ -8,22 +8,16 @@ public class MortgageReport {
 
     private final MortgageCalculator calculator;
 
-    public MortgageReport(int principal, float annualInterest, byte numYears) {
-        this.calculator = new MortgageCalculator(principal, annualInterest, numYears);
+    public MortgageReport(MortgageCalculator calculator) {
+        this.calculator = calculator;
     }
 
     public void printPaymentPlan() {
         printHeader("PAYMENT SCHEDULE");
         System.out.println("Payment plan:");
 
-        short numPaymentsMade = 0;
-        int totalPayments = calculator.calculateTotalNumPayments();
-        double monthlyInterest = calculator.calculateMonthlyInterest();
-
-        while (numPaymentsMade < totalPayments) {
-            numPaymentsMade++;
-            double remainingBalance = calculator.calculateRemainingBalance(monthlyInterest, totalPayments, numPaymentsMade);
-            System.out.println(convertToCurrency(remainingBalance));
+        for(double balance : calculator.getRemainingBalances()) {
+            System.out.println(convertToCurrency(balance));
         }
     }
 
